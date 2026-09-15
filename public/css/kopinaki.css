@@ -1,0 +1,151 @@
+body {
+    background-color: #f8f6f2;
+    color: #333;
+}
+
+.reservation-section {
+    padding: 80px 0;
+}
+
+.reservation-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.reservation-title {
+    font-weight: 700;
+    color: #3b2a20;
+}
+
+.reservation-subtitle {
+    color: #777;
+    font-size: 15px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #3b2a20;
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #8b5e3c;
+    box-shadow: 0 0 0 0.2rem rgba(139, 94, 60, 0.15);
+}
+
+.form-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3b2a20;
+    margin-bottom: 20px;
+}
+
+.preference-card {
+    border: 1px solid #e3e3e3;
+    border-radius: 15px;
+    padding: 20px;
+    height: 100%;
+}
+
+.preference-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background-color: #f1e7dc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b5e3c;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.btn-recommend {
+    background-color: #8b5e3c;
+    border: none;
+    color: white;
+    padding: 13px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-recommend:hover {
+    background-color: #6f472d;
+    color: white;
+}
+
+.required {
+    color: #dc3545;
+}
+
+.info-box {
+    background-color: #f8f1ea;
+    border-radius: 12px;
+    padding: 15px 18px;
+    margin-bottom: 30px;
+}
+
+.info-box i {
+    color: #8b5e3c;
+}
+
+.payment-box {
+    text-align: center;
+    background-color: #f8f1ea;
+    border-radius: 16px;
+    padding: 28px 20px;
+}
+
+.barcode-frame {
+    display: inline-block;
+    background: #fff;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px dashed #c4a484;
+}
+
+.barcode-image {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+}
+
+.payment-timer .fs-3 {
+    color: #8b5e3c;
+    letter-spacing: 2px;
+}
+
+.admin-stat-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    height: 100%;
+}
+
+.admin-stat-card small {
+    color: #777;
+}
+
+.admin-stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #3b2a20;
+    margin-top: 8px;
+}
+
+.navbar .nav-link.active {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+
