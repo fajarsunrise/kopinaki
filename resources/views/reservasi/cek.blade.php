@@ -144,7 +144,7 @@
                                         >
                                     </div>
 
-                                    <div class="mb-4">
+                                    <div class="mb-3">
                                         <label class="form-label">Nama Pemilik Rekening</label>
                                         <input
                                             type="text"
@@ -156,8 +156,16 @@
                                         >
                                     </div>
 
-                                    
-                                   
+                                    <div class="mb-4">
+                                        <label class="form-label">Alasan Pembatalan</label>
+                                        <textarea
+                                            name="alasan_pembatalan"
+                                            class="form-control"
+                                            rows="3"
+                                            placeholder="Tuliskan alasan pembatalan reservasi Anda..."
+                                            required
+                                        >{{ old('alasan_pembatalan') }}</textarea>
+                                    </div>
 
                                     <button type="submit" class="btn btn-outline-danger">
                                         Ajukan Pembatalan
@@ -172,6 +180,16 @@
                                     action="{{ route('reservasi.batalkan', $reservasi->kode_reservasi) }}"
                                 >
                                     @csrf
+                                    <div class="mb-3">
+                                        <label class="form-label">Alasan Pembatalan</label>
+                                        <textarea
+                                            name="alasan_pembatalan"
+                                            class="form-control"
+                                            rows="3"
+                                            placeholder="Tuliskan alasan pembatalan reservasi Anda..."
+                                            required
+                                        >{{ old('alasan_pembatalan') }}</textarea>
+                                    </div>
                                     <button type="submit" class="btn btn-outline-danger">
                                         Batalkan Reservasi
                                     </button>
