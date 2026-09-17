@@ -135,7 +135,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Nomor Rekening</label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             name="nomor_rekening"
                                             class="form-control"
                                             value="{{ old('nomor_rekening') }}"

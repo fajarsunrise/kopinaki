@@ -243,80 +243,229 @@
         </div>
 
 
-        <div class="row g-4">
+        <!-- Baris Pertama: Langkah 1-3 -->
+        <div class="row g-4 justify-content-center mb-4">
 
             <!-- Step 1 -->
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
 
                 <div class="step-number">
                     1
                 </div>
 
                 <h5>
-                    Login
+                    Isi Form Reservasi
                 </h5>
 
                 <p class="text-muted">
-                    Masuk atau buat akun terlebih dahulu.
+                    Masukkan data diri, tanggal, jam,
+                    dan jumlah peserta.
                 </p>
 
             </div>
 
 
             <!-- Step 2 -->
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
 
                 <div class="step-number">
                     2
                 </div>
 
                 <h5>
-                    Pilih Tanggal
+                    Pilih Meja
                 </h5>
 
                 <p class="text-muted">
-                    Tentukan tanggal dan waktu reservasi.
+                    Pilih meja secara manual atau
+                    gunakan rekomendasi SAW.
                 </p>
 
             </div>
 
 
             <!-- Step 3 -->
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
 
                 <div class="step-number">
                     3
                 </div>
 
                 <h5>
-                    Pilih Kursi
+                    Konfirmasi Reservasi
                 </h5>
 
                 <p class="text-muted">
-                    Pilih kursi atau gunakan rekomendasi SAW.
+                    Periksa kembali data dan konfirmasi
+                    reservasi Anda.
                 </p>
 
             </div>
 
+        </div>
+
+
+        <!-- Baris Kedua: Langkah 4-5 -->
+        <div class="row g-4 justify-content-center">
 
             <!-- Step 4 -->
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
 
                 <div class="step-number">
                     4
                 </div>
 
                 <h5>
-                    Bayar DP
+                    Bayar DP &amp; Upload Bukti
                 </h5>
 
                 <p class="text-muted">
-                    Lakukan pembayaran uang muka dan tunggu
-                    konfirmasi admin.
+                    Lakukan pembayaran uang muka, upload
+                    bukti transfer, dan tunggu konfirmasi admin.
                 </p>
 
             </div>
 
+
+            <!-- Step 5 -->
+            <div class="col-md-4 text-center">
+
+                <div class="step-number" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                    5
+                </div>
+
+                <h5>
+                    Pembatalan (Opsional)
+                </h5>
+
+                <p class="text-muted">
+                    Jika perlu membatalkan, cek reservasi
+                    dengan kode dan ajukan pembatalan.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CARA PEMBATALAN ================= -->
+<section class="py-5" id="cara-pembatalan" style="background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);">
+
+    <div class="container py-4">
+
+        <div class="text-center mb-5">
+
+            <p class="text-muted mb-1">
+                Proses Pembatalan
+            </p>
+
+            <h2 class="section-title">
+                Cara Membatalkan Reservasi
+            </h2>
+
+            <p class="text-muted">
+                Pembatalan dapat dilakukan selama reservasi belum selesai.
+                Ikuti langkah-langkah berikut.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Pembatalan Step 1 -->
+            <div class="col-md-4">
+
+                <div class="card feature-card shadow-sm h-100 p-4 text-center" style="border-left: 4px solid #dc3545;">
+
+                    <div class="feature-icon mb-3" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                        <i class="bi bi-search"></i>
+                    </div>
+
+                    <div class="step-number mx-auto mb-3" style="background: linear-gradient(135deg, #dc3545, #c82333); width: 40px; height: 40px; font-size: 1rem;">
+                        1
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Cek Kode Reservasi
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Masukkan kode reservasi (contoh: KNK-XXXXXX)
+                        di bagian <strong>Cek Reservasi</strong> pada halaman ini.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pembatalan Step 2 -->
+            <div class="col-md-4">
+
+                <div class="card feature-card shadow-sm h-100 p-4 text-center" style="border-left: 4px solid #dc3545;">
+
+                    <div class="feature-icon mb-3" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
+
+                    <div class="step-number mx-auto mb-3" style="background: linear-gradient(135deg, #dc3545, #c82333); width: 40px; height: 40px; font-size: 1rem;">
+                        2
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Ajukan Pembatalan
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Isi alasan pembatalan dan (jika sudah bayar DP)
+                        masukkan nomor rekening untuk pengembalian dana.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pembatalan Step 3 -->
+            <div class="col-md-4">
+
+                <div class="card feature-card shadow-sm h-100 p-4 text-center" style="border-left: 4px solid #dc3545;">
+
+                    <div class="feature-icon mb-3" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                        <i class="bi bi-arrow-return-left"></i>
+                    </div>
+
+                    <div class="step-number mx-auto mb-3" style="background: linear-gradient(135deg, #dc3545, #c82333); width: 40px; height: 40px; font-size: 1rem;">
+                        3
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Tunggu Verifikasi Admin
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Admin akan memverifikasi pembatalan dan
+                        mengembalikan DP ke rekening yang Anda daftarkan.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Tombol CTA Pembatalan -->
+        <div class="text-center mt-5">
+            <a href="#pembatalan" class="btn btn-outline-danger btn-lg px-4">
+                <i class="bi bi-search me-2"></i>
+                Cek Reservasi untuk Pembatalan
+            </a>
         </div>
 
     </div>
@@ -663,14 +812,14 @@
                     <!-- Keterangan Fasilitas Umum -->
                     <div class="d-flex flex-wrap gap-2 mb-3">
                         <span class="badge rounded-pill" style="background-color:#198754;">
-                            <i class="bi bi-wifi me-1"></i> Free WiFi
-                        </span>
-                        <span class="badge rounded-pill" style="background-color:#6c757d;">
-                            <i class="bi bi-slash-circle me-1"></i> Area No Smoking
-                        </span>
-                        <span class="badge rounded-pill" style="background-color:#dc3545;">
-                            <i class="bi bi-fire me-1"></i> Area Smoking
-                        </span>
+                                                        <i class="bi bi-wifi me-1"></i> Free WiFi
+                                                    </span>
+                                                    <span class="badge rounded-pill" style="background-color:#6c757d;">
+                                                        <i class="bi bi-slash-circle me-1"></i> Mushola
+                                                    </span>
+                                                    <span class="badge rounded-pill" style="background-color:#dc3545;">
+                                                        <i class="bi bi-fire me-1"></i> Stop Kontak
+                                                    </span>
                     </div>
 
 

@@ -198,7 +198,7 @@
 
                             <div class="form-section-title mb-3">
                                 <i class="bi bi-qr-code me-2"></i>
-                                Pembayaran
+                                Instruksi Pembayaran
                             </div>
 
                             <p class="text-muted mb-3">
@@ -229,23 +229,122 @@
                                 <div class="fw-bold fs-3" id="payment-countdown">20:00</div>
                             </div>
 
+                        </div>
+
+                        {{-- ============================== --}}
+                        {{-- FORM BUKTI PEMBAYARAN --}}
+                        {{-- ============================== --}}
+                        <div class="payment-box mt-4 text-start">
+
+                            <div class="form-section-title mb-3">
+                                <i class="bi bi-upload me-2"></i>
+                                Upload Bukti Pembayaran
+                            </div>
+
+                            <p class="text-muted mb-4">
+                                Setelah melakukan transfer, upload foto / screenshot bukti pembayaran
+                                di bawah ini agar admin dapat memverifikasi pembayaran Anda.
+                            </p>
+
                             <form
                                 method="POST"
                                 action="{{ route('reservasi.sudah-bayar', $reservasi->kode_reservasi) }}"
+                                enctype="multipart/form-data"
+                                id="form-bukti-pembayaran"
                             >
                                 @csrf
-                                <button type="submit" class="btn btn-recommend">
+
+                                {{-- Preview Gambar --}}
+                                <div id="preview-wrapper" class="mb-3" style="display:none;">
+                                    <small class="text-muted d-block mb-2">Preview bukti:</small>
+                                    <img
+                                        id="preview-bukti"
+                                        src="#"
+                                        alt="Preview bukti pembayaran"
+                                        class="img-fluid rounded border"
+                                        style="max-height: 260px; object-fit: contain; width: 100%;"
+                                    >
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="bukti_pembayaran" class="form-label fw-semibold">
+                                        <i class="bi bi-image me-1"></i>
+                                        Foto / Screenshot Bukti Transfer
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        name="bukti_pembayaran"
+                                        id="bukti_pembayaran"
+                                        class="form-control @error('bukti_pembayaran') is-invalid @enderror"
+                                        accept="image/jpeg,image/png,image/jpg,image/webp"
+                                        required
+                                    >
+                                    @error('bukti_pembayaran')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">
+                                        Format yang diterima: JPG, PNG, WEBP. Ukuran maks. 2 MB.
+                                    </small>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="catatan_pembayaran" class="form-label fw-semibold">
+                                        <i class="bi bi-chat-text me-1"></i>
+                                        Catatan (Opsional)
+                                    </label>
+                                    <textarea
+                                        name="catatan_pembayaran"
+                                        id="catatan_pembayaran"
+                                        class="form-control"
+                                        rows="2"
+                                        placeholder="Contoh: Transfer via BCA mobile, pukul 14.30..."
+                                    >{{ old('catatan_pembayaran') }}</textarea>
+                                </div>
+
+                                <div class="alert alert-info d-flex align-items-start mb-4" style="font-size:0.875rem;">
+                                    <i class="bi bi-info-circle-fill me-2 mt-1 flex-shrink-0"></i>
+                                    <div>
+                                        Setelah mengklik <strong>Konfirmasi Sudah Bayar</strong>,
+                                        admin akan memverifikasi bukti pembayaran Anda.
+                                        Status reservasi akan berubah menjadi <strong>Dikonfirmasi</strong>
+                                        setelah verifikasi berhasil.
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-recommend w-100" id="btn-konfirmasi-bayar">
                                     <i class="bi bi-wallet2 me-2"></i>
-                                    Sudah Bayar
+                                    Konfirmasi Sudah Bayar
                                 </button>
+
                             </form>
 
                         </div>
                     @elseif ($menungguVerifikasi)
-                        <div class="alert alert-warning mt-4 mb-0">
-                            <i class="bi bi-info-circle me-2"></i>
-                            Status meja masih proses pembayaran sampai admin
-                            menyelesaikan verifikasi.
+                        <div class="payment-box mt-4">
+
+                            <div class="form-section-title mb-3">
+                                <i class="bi bi-hourglass-split me-2"></i>
+                                Bukti Pembayaran Terkirim
+                            </div>
+
+                            @if ($reservasi->bukti_pembayaran)
+                                <div class="mb-3 text-start">
+                                    <small class="text-muted d-block mb-2">Bukti yang diunggah:</small>
+                                    <img
+                                        src="{{ asset('images/bukti-pembayaran/' . $reservasi->bukti_pembayaran) }}"
+                                        alt="Bukti pembayaran"
+                                        class="img-fluid rounded border"
+                                        style="max-height: 200px; object-fit: contain; width: 100%;"
+                                    >
+                                </div>
+                            @endif
+
+                            <div class="alert alert-warning mb-0">
+                                <i class="bi bi-info-circle me-2"></i>
+                                Bukti pembayaran Anda sedang ditinjau oleh admin.
+                                Status meja akan berubah setelah verifikasi selesai.
+                            </div>
                         </div>
                     @elseif ($lunas)
                         <div class="alert alert-success mt-4 mb-0">
@@ -341,6 +440,39 @@
                 // abaikan gangguan jaringan singkat
             }
         }, 5000);
+        // =====================================================
+        // PREVIEW GAMBAR BUKTI PEMBAYARAN
+        // =====================================================
+        const inputBukti = document.getElementById('bukti_pembayaran');
+        const previewWrapper = document.getElementById('preview-wrapper');
+        const previewBukti = document.getElementById('preview-bukti');
+
+        if (inputBukti) {
+            inputBukti.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewBukti.src = e.target.result;
+                        previewWrapper.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewWrapper.style.display = 'none';
+                    previewBukti.src = '#';
+                }
+            });
+        }
+
+        // Tombol konfirmasi - disable setelah klik untuk cegah double submit
+        const formBukti = document.getElementById('form-bukti-pembayaran');
+        const btnKonfirmasi = document.getElementById('btn-konfirmasi-bayar');
+        if (formBukti && btnKonfirmasi) {
+            formBukti.addEventListener('submit', function () {
+                btnKonfirmasi.disabled = true;
+                btnKonfirmasi.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengirim...';
+            });
+        }
     })();
 </script>
 @elseif ($menungguVerifikasi)

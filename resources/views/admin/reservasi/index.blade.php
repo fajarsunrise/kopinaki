@@ -57,6 +57,7 @@
                     <th>Meja</th>
                     <th>Jadwal</th>
                     <th>DP</th>
+                    <th>Bukti Bayar</th>
                     <th>Status</th>
                     <th></th>
                 </tr>
@@ -84,6 +85,21 @@
                                 </small>
                             @endif
                         </td>
+                        <td>
+                            @if ($reservasi->bukti_pembayaran)
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal-bukti-{{ $reservasi->id }}"
+                                >
+                                    <i class="bi bi-image me-1"></i>
+                                    Lihat Bukti
+                                </button>
+                            @else
+                                <span class="text-muted small">-</span>
+                            @endif
+                        </td>
                         <td>@include('admin.partials.status-badge')</td>
                         <td class="text-end">
                             @if ($reservasi->status === 'menunggu_pembayaran' && $reservasi->status_pembayaran === 'menunggu_verifikasi')
@@ -107,7 +123,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted py-4">
+                        <td colspan="8" class="text-center text-muted py-4">
                             Tidak ada reservasi aktif{{ $kata !== '' ? ' untuk pencarian tersebut' : '' }}.
                         </td>
                     </tr>
@@ -118,5 +134,56 @@
 
     {{ $reservasis->links() }}
 </div>
+
+{{-- ============================== --}}
+{{-- MODAL PREVIEW BUKTI PEMBAYARAN --}}
+{{-- ============================== --}}
+@foreach ($reservasis as $reservasi)
+    @if ($reservasi->bukti_pembayaran)
+        <div class="modal fade" id="modal-bukti-{{ $reservasi->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-image me-2"></i>
+                            Bukti Pembayaran — {{ $reservasi->kode_reservasi }}
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body text-center p-4">
+                        <img
+                            src="{{ asset('images/bukti-pembayaran/' . $reservasi->bukti_pembayaran) }}"
+                            alt="Bukti pembayaran {{ $reservasi->kode_reservasi }}"
+                            class="img-fluid rounded"
+                            style="max-height: 500px; object-fit: contain;"
+                        >
+                        <div class="mt-3 text-muted small">
+                            Diunggah oleh: <strong>{{ $reservasi->nama }}</strong>
+                            &bull; DP: <strong>Rp {{ number_format($reservasi->jumlah_dp, 0, ',', '.') }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Tutup
+                        </button>
+                        @if ($reservasi->status === 'menunggu_pembayaran' && $reservasi->status_pembayaran === 'menunggu_verifikasi')
+                            <form method="POST" action="{{ route('admin.reservasi.verifikasi', $reservasi) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-recommend">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Verifikasi Pembayaran
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    @endif
+@endforeach
 
 @endsection

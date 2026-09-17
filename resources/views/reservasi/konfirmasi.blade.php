@@ -322,14 +322,14 @@
                                         <small class="text-muted">Fasilitas Umum</small>
                                         <div class="d-flex flex-wrap gap-2 mt-2">
                                             <span class="badge rounded-pill" style="background-color:#198754;">
-                                                <i class="bi bi-wifi me-1"></i> Free WiFi
-                                            </span>
-                                            <span class="badge rounded-pill" style="background-color:#6c757d;">
-                                                <i class="bi bi-slash-circle me-1"></i> Area No Smoking
-                                            </span>
-                                            <span class="badge rounded-pill" style="background-color:#dc3545;">
-                                                <i class="bi bi-fire me-1"></i> Area Smoking
-                                            </span>
+                                                        <i class="bi bi-wifi me-1"></i> Free WiFi
+                                                    </span>
+                                                    <span class="badge rounded-pill" style="background-color:#6c757d;">
+                                                        <i class="bi bi-slash-circle me-1"></i> Mushola
+                                                    </span>
+                                                    <span class="badge rounded-pill" style="background-color:#dc3545;">
+                                                        <i class="bi bi-fire me-1"></i> Stop Kontak
+                                                    </span>
                                         </div>
                                     </div>
 

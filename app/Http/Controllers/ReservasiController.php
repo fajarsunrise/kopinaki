@@ -497,7 +497,7 @@ public function simpan(Request $request)
         return view('reservasi.berhasil', compact('reservasi'));
     }
 
-    public function sudahBayar(string $kode)
+    public function sudahBayar(Request $request, string $kode)
     {
         Reservasi::batalkanYangKadaluarsa();
 
@@ -524,14 +524,53 @@ public function simpan(Request $request)
         }
 
         if ($reservasi->status_pembayaran === 'belum_bayar') {
+
+            // =====================================================
+            // VALIDASI BUKTI PEMBAYARAN
+            // =====================================================
+
+            $request->validate([
+                'bukti_pembayaran' => [
+                    'required',
+                    'file',
+                    'image',
+                    'mimes:jpeg,png,jpg,webp',
+                    'max:2048',
+                ],
+            ], [
+                'bukti_pembayaran.required' => 'Bukti pembayaran wajib diunggah.',
+                'bukti_pembayaran.image'    => 'File harus berupa gambar.',
+                'bukti_pembayaran.mimes'    => 'Format gambar yang diizinkan: JPG, PNG, WEBP.',
+                'bukti_pembayaran.max'      => 'Ukuran gambar maksimal 2 MB.',
+            ]);
+
+            // =====================================================
+            // SIMPAN FILE BUKTI PEMBAYARAN
+            // =====================================================
+
+            $file = $request->file('bukti_pembayaran');
+            $namaFile = time() . '_' . $kode . '.' . $file->getClientOriginalExtension();
+            $direktori = public_path('images/bukti-pembayaran');
+
+            if (!file_exists($direktori)) {
+                mkdir($direktori, 0755, true);
+            }
+
+            $file->move($direktori, $namaFile);
+
+            // =====================================================
+            // UPDATE STATUS & SIMPAN BUKTI
+            // =====================================================
+
             $reservasi->update([
                 'status_pembayaran' => 'menunggu_verifikasi',
+                'bukti_pembayaran'  => $namaFile,
             ]);
         }
 
         return redirect()
             ->route('reservasi.pembayaran', $kode)
-            ->with('success', 'Konfirmasi pembayaran terkirim. Mohon tunggu verifikasi dari admin.');
+            ->with('success', 'Bukti pembayaran berhasil dikirim. Mohon tunggu verifikasi dari admin.');
     }
 
     public function statusPembayaran(string $kode)
