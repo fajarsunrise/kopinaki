@@ -113,11 +113,16 @@
                                 </label>
 
                                 <input
-                                    type="number"
+                                    type="text"
+                                    inputmode="numeric"
+                                    pattern="[0-9]{4,14}"
                                     class="form-control"
                                     id="whatsapp"
                                     name="whatsapp"
+                                    minlength="4"
+                                    maxlength="14"
                                     placeholder="Contoh: 081234567890"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14);"
                                     required>
 
                                 <small class="text-muted">
@@ -246,6 +251,7 @@
                                     name="jumlah_peserta"
                                     min="1"
                                     placeholder="Contoh: 4"
+                                    oninput="if(this.value < 1) this.value = '';"
                                     required>
 
                                 <small class="text-muted">

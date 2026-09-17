@@ -894,23 +894,7 @@
                 </div>
 
 
-                <!-- Footer Modal -->
-                <div class="modal-footer">
 
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Tutup
-                    </button>
-
-
-                    <a href="{{ route('reservasi.create') }}" class="btn btn-coffee">
-
-                        <i class="bi bi-calendar-check"></i>
-
-                        Reservasi Meja
-
-                    </a>
-
-                </div>
 
 
             </div>
