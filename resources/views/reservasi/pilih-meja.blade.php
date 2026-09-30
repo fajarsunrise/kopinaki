@@ -35,7 +35,7 @@
 
                         <p class="reservation-subtitle">
                             Status tempat duduk diperbarui sesuai kondisi reservasi
-                            pada tanggal {{ $request->tanggal }} pukul {{ $request->jam }}.
+                            pada tanggal {{ $request->tanggal }}.
                         </p>
 
                     </div>
@@ -136,10 +136,18 @@
                                             data-bs-target="#modal{{ $meja->kode_meja }}"
                                         >
 
-                                            @if ($meja->gambar)
+                                            @php
+                                                $gambarPath = $meja->gambar
+                                                    ? (file_exists(public_path('images/tables/' . $meja->gambar))
+                                                        ? asset('images/tables/' . $meja->gambar)
+                                                        : null)
+                                                    : null;
+                                            @endphp
+
+                                            @if ($gambarPath)
 
                                                 <img
-                                                    src="{{ asset('images/tables/' . $meja->gambar) }}"
+                                                    src="{{ $gambarPath }}"
                                                     class="card-img-top"
                                                     style="height: 180px; object-fit: cover;"
                                                     alt="Meja {{ $meja->kode_meja }}"
@@ -230,10 +238,18 @@
 
                                     <div class="modal-body">
 
-                                        @if ($meja->gambar)
+                                        @php
+                                            $gambarModal = $meja->gambar
+                                                ? (file_exists(public_path('images/tables/' . $meja->gambar))
+                                                    ? asset('images/tables/' . $meja->gambar)
+                                                    : null)
+                                                : null;
+                                        @endphp
+
+                                        @if ($gambarModal)
 
                                             <img
-                                                src="{{ asset('images/tables/' . $meja->gambar) }}"
+                                                src="{{ $gambarModal }}"
                                                 class="img-fluid rounded mb-4 w-100"
                                                 style="max-height: 300px; object-fit: cover;"
                                                 alt="Meja {{ $meja->kode_meja }}"
@@ -355,15 +371,33 @@
                                             <div class="col-12 mt-3">
                                                 <small class="text-muted">Fasilitas Umum</small>
                                                 <div class="d-flex flex-wrap gap-2 mt-2">
+                                                    {{-- Free WiFi tersedia di semua lantai --}}
                                                     <span class="badge rounded-pill" style="background-color:#198754;">
                                                         <i class="bi bi-wifi me-1"></i> Free WiFi
                                                     </span>
-                                                    <span class="badge rounded-pill" style="background-color:#6c757d;">
-                                                        <i class="bi bi-slash-circle me-1"></i> Mushola
+                                                    {{-- Stop Kontak tersedia di semua lantai --}}
+                                                    <span class="badge rounded-pill" style="background-color:#0d6efd;">
+                                                        <i class="bi bi-plug me-1"></i> Stop Kontak
                                                     </span>
-                                                    <span class="badge rounded-pill" style="background-color:#dc3545;">
-                                                        <i class="bi bi-fire me-1"></i> Stop Kontak
-                                                    </span>
+                                                    @if ($meja->lantai == 1)
+                                                        <span class="badge rounded-pill" style="background-color:#6c757d;">
+                                                            <i class="bi bi-p-circle me-1"></i> Area Parkir
+                                                        </span>
+                                                        <span class="badge rounded-pill" style="background-color:#fd7e14;">
+                                                            <i class="bi bi-cash-register me-1"></i> Dekat Kasir
+                                                        </span>
+                                                    @elseif ($meja->lantai == 2)
+                                                        <span class="badge rounded-pill" style="background-color:#dc3545;">
+                                                            <i class="bi bi-slash-circle me-1"></i> No Smoking
+                                                        </span>
+                                                    @elseif ($meja->lantai == 3)
+                                                        <span class="badge rounded-pill" style="background-color:#6f42c1;">
+                                                            <i class="bi bi-door-open me-1"></i> Kamar Mandi
+                                                        </span>
+                                                        <span class="badge rounded-pill" style="background-color:#20c997;">
+                                                            <i class="bi bi-moon me-1"></i> Mushola
+                                                        </span>
+                                                    @endif
                                                 </div>
                                             </div>
 
@@ -453,7 +487,6 @@
     (function () {
         const statusUrl = @json(route('reservasi.status-meja'));
         const tanggal = @json($request->tanggal);
-        const jam = @json($request->jam);
         const labels = {
             tersedia: 'Tersedia',
             proses_pembayaran: 'Proses pembayaran',
@@ -493,7 +526,7 @@
         }
 
         async function perbaruiStatusMeja() {
-            const url = statusUrl + '?tanggal=' + encodeURIComponent(tanggal) + '&jam=' + encodeURIComponent(jam);
+            const url = statusUrl + '?tanggal=' + encodeURIComponent(tanggal);
             const response = await fetch(url, {
                 headers: {
                     'Accept': 'application/json'

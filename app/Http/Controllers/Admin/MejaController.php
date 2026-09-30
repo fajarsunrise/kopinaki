@@ -110,4 +110,33 @@ class MejaController extends Controller
 
         return back()->with('success', 'Meja '.$meja->kode_meja.' diaktifkan kembali.');
     }
+
+    public function destroy(Meja $meja)
+    {
+        // Cek apakah meja masih memiliki reservasi aktif
+        $reservasiAktif = $meja->reservasis()
+            ->whereIn('status', ['menunggu_pembayaran', 'dikonfirmasi', 'menunggu_pembatalan'])
+            ->exists();
+
+        if ($reservasiAktif) {
+            return back()->withErrors([
+                'hapus' => 'Meja '.$meja->kode_meja.' tidak dapat dihapus karena masih memiliki reservasi aktif.',
+            ]);
+        }
+
+        // Hapus file gambar jika ada
+        if ($meja->gambar) {
+            $path = public_path('images/tables/' . $meja->gambar);
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+
+        $kodeMeja = $meja->kode_meja;
+        $meja->delete();
+
+        return redirect()
+            ->route('admin.meja.index')
+            ->with('success', 'Meja '.$kodeMeja.' berhasil dihapus.');
+    }
 }

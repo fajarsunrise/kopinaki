@@ -75,4 +75,6 @@ Route::middleware('auth')->group(function () {
         ->name('admin.meja.nonaktifkan');
     Route::post('/admin/meja/{meja}/aktifkan', [AdminMejaController::class, 'aktifkan'])
         ->name('admin.meja.aktifkan');
+    Route::delete('/admin/meja/{meja}', [AdminMejaController::class, 'destroy'])
+        ->name('admin.meja.destroy');
 });

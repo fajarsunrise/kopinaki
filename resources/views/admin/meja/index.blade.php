@@ -111,7 +111,7 @@
                     <th>Pemandangan</th>
                     <th>Fasilitas</th>
                     <th>Status</th>
-                    <th></th>
+                    <th colspan="2"></th>
                 </tr>
             </thead>
             <tbody>
@@ -130,22 +130,35 @@
                             @endif
                         </td>
                         <td class="text-end">
-                            @if ($meja->status === 'nonaktif')
-                                <form method="POST" action="{{ route('admin.meja.aktifkan', $meja) }}">
+                            <div class="d-flex gap-2 justify-content-end">
+                                @if ($meja->status === 'nonaktif')
+                                    <form method="POST" action="{{ route('admin.meja.aktifkan', $meja) }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-success btn-sm">Aktifkan</button>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('admin.meja.nonaktifkan', $meja) }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-warning btn-sm">Nonaktifkan</button>
+                                    </form>
+                                @endif
+                                <form
+                                    method="POST"
+                                    action="{{ route('admin.meja.destroy', $meja) }}"
+                                    onsubmit="return confirm('Yakin hapus meja {{ $meja->kode_meja }}? Data reservasi lama tetap tersimpan, namun meja ini akan hilang permanen.')"
+                                >
                                     @csrf
-                                    <button type="submit" class="btn btn-outline-success btn-sm">Aktifkan</button>
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash me-1"></i>Hapus
+                                    </button>
                                 </form>
-                            @else
-                                <form method="POST" action="{{ route('admin.meja.nonaktifkan', $meja) }}">
-                                    @csrf
-                                    <button type="submit" class="btn btn-outline-warning btn-sm">Tidak aktif</button>
-                                </form>
-                            @endif
+                            </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted py-4">
+                        <td colspan="8" class="text-center text-muted py-4">
                             Tidak ada data meja{{ $kata !== '' ? ' untuk pencarian tersebut' : '' }}.
                         </td>
                     </tr>

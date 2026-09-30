@@ -27,10 +27,10 @@ class ReservasiController extends Controller
 
 // =====================================================
 // CARI MEJA YANG SUDAH DIPESAN
-// PADA TANGGAL DAN JAM YANG DIPILIH
+// PADA TANGGAL YANG DIPILIH
 // =====================================================
 
-$mejaSudahDipesan = $this->mejaTerisiIds($request->tanggal, $request->jam);
+$mejaSudahDipesan = $this->mejaTerisiIds($request->tanggal);
 
 
 // =====================================================
@@ -49,7 +49,7 @@ if ($mejas->isEmpty()) {
         ->route('reservasi.pilih-meja')
         ->withErrors([
             'tanggal' =>
-                'Semua meja pada tanggal dan jam tersebut sedang terisi atau tidak aktif. Anda tetap dapat melihat status meja di denah.'
+                'Semua meja pada tanggal tersebut sedang terisi atau tidak aktif. Anda tetap dapat melihat status meja di denah.'
         ]);
 }
 
@@ -225,7 +225,7 @@ if ($mejas->isEmpty()) {
                 ]);
         }
 
-        $mejas = $this->mejaDenganStatus($form->tanggal, $form->jam);
+        $mejas = $this->mejaDenganStatus($form->tanggal);
 
         return view('reservasi.pilih-meja', [
             'mejas' => $mejas,
@@ -234,16 +234,15 @@ if ($mejas->isEmpty()) {
     }
 
     /**
-     * Status meja untuk tanggal dan jam tertentu (pembaruan denah).
+     * Status meja untuk tanggal tertentu (pembaruan denah).
      */
     public function statusMeja(Request $request)
     {
         $request->validate([
             'tanggal' => 'required|date',
-            'jam' => 'required',
         ]);
 
-        $mejas = $this->mejaDenganStatus($request->tanggal, $request->jam);
+        $mejas = $this->mejaDenganStatus($request->tanggal);
 
         return response()->json([
             'mejas' => $mejas->map(function ($meja) {
@@ -327,12 +326,12 @@ public function simpan(Request $request)
 
     $meja = Meja::findOrFail($request->meja_id);
 
-    if ($this->statusReservasiMeja($meja, $request->tanggal, $request->jam) !== 'tersedia') {
+    if ($this->statusReservasiMeja($meja, $request->tanggal) !== 'tersedia') {
         return redirect()
             ->route('reservasi.pilih-meja')
             ->withErrors([
                 'meja_id' =>
-                    'Maaf, meja tersebut baru saja dipesan oleh pelanggan lain untuk tanggal dan jam yang sama. Silakan pilih meja lain.'
+                    'Maaf, meja tersebut sudah dipesan oleh pelanggan lain pada tanggal yang sama. Silakan pilih meja lain.'
             ]);
     }
 
@@ -366,8 +365,7 @@ public function simpan(Request $request)
         // =================================================
 
         $sudahDipesan = Reservasi::where('meja_id', $meja->id)
-            ->where('tanggal', $request->tanggal)
-            ->where('jam', $request->jam)
+            ->whereDate('tanggal', $request->tanggal)
             ->whereIn('status', [
                 'menunggu_pembayaran',
                 'dikonfirmasi',
@@ -468,7 +466,7 @@ public function simpan(Request $request)
             ->route('reservasi.pilih-meja')
             ->withErrors([
                 'meja_id' =>
-                    'Maaf, meja tersebut baru saja dipesan oleh pelanggan lain untuk tanggal dan jam yang sama. Silakan pilih meja lain.'
+                    'Maaf, meja tersebut sudah dipesan oleh pelanggan lain pada tanggal yang sama. Silakan pilih meja lain.'
             ]);
     }
 
@@ -745,13 +743,12 @@ public function simpan(Request $request)
         return $data ? (object) $data : null;
     }
 
-    private function mejaTerisiIds($tanggal, $jam)
+    private function mejaTerisiIds($tanggal)
     {
         Reservasi::batalkanYangKadaluarsa();
 
         return Reservasi::query()
             ->whereDate('tanggal', $tanggal)
-            ->whereTime('jam', $jam)
             ->whereIn('status', [
                 'menunggu_pembayaran',
                 'dikonfirmasi',
@@ -760,13 +757,12 @@ public function simpan(Request $request)
             ->pluck('meja_id');
     }
 
-    private function mejaDenganStatus($tanggal, $jam)
+    private function mejaDenganStatus($tanggal)
     {
         Reservasi::batalkanYangKadaluarsa();
 
         $reservasiAktif = Reservasi::query()
             ->whereDate('tanggal', $tanggal)
-            ->whereTime('jam', $jam)
             ->whereIn('status', [
                 'menunggu_pembayaran',
                 'dikonfirmasi',
@@ -789,14 +785,13 @@ public function simpan(Request $request)
             });
     }
 
-    private function statusReservasiMeja(Meja $meja, $tanggal, $jam): string
+    private function statusReservasiMeja(Meja $meja, $tanggal): string
     {
         Reservasi::batalkanYangKadaluarsa();
 
         $reservasi = Reservasi::query()
             ->where('meja_id', $meja->id)
             ->whereDate('tanggal', $tanggal)
-            ->whereTime('jam', $jam)
             ->whereIn('status', [
                 'menunggu_pembayaran',
                 'dikonfirmasi',

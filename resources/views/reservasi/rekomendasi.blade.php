@@ -74,10 +74,18 @@
                                         {{-- GAMBAR MEJA --}}
                                         {{-- ================================================= --}}
 
-                                        @if($hasil['meja']->gambar)
+                                        @php
+                                            $gambarRek = $hasil['meja']->gambar
+                                                ? (file_exists(public_path('images/tables/' . $hasil['meja']->gambar))
+                                                    ? asset('images/tables/' . $hasil['meja']->gambar)
+                                                    : null)
+                                                : null;
+                                        @endphp
+
+                                        @if($gambarRek)
 
                                             <img
-                                                src="{{ asset('images/tables/' . $hasil['meja']->gambar) }}"
+                                                src="{{ $gambarRek }}"
                                                 class="card-img-top"
                                                 style="height: 220px; object-fit: cover;"
                                                 alt="Meja {{ $hasil['meja']->kode_meja }}"
@@ -245,19 +253,36 @@
 
                                             </div>
 
-                                            {{-- Fasilitas Umum Kafe --}}
+                                            {{-- Fasilitas Umum per Lantai --}}
                                             <div class="col-12 mt-3">
                                                 <small class="text-muted">Fasilitas Umum</small>
                                                 <div class="d-flex flex-wrap gap-2 mt-2">
+                                                    {{-- WiFi & Stop Kontak ada di semua lantai --}}
                                                     <span class="badge rounded-pill" style="background-color:#198754;">
                                                         <i class="bi bi-wifi me-1"></i> Free WiFi
                                                     </span>
-                                                    <span class="badge rounded-pill" style="background-color:#6c757d;">
-                                                        <i class="bi bi-slash-circle me-1"></i> Area No Smoking
+                                                    <span class="badge rounded-pill" style="background-color:#0d6efd;">
+                                                        <i class="bi bi-plug me-1"></i> Stop Kontak
                                                     </span>
-                                                    <span class="badge rounded-pill" style="background-color:#dc3545;">
-                                                        <i class="bi bi-fire me-1"></i> Area Smoking
-                                                    </span>
+                                                    @if ($hasil['meja']->lantai == 1)
+                                                        <span class="badge rounded-pill" style="background-color:#6c757d;">
+                                                            <i class="bi bi-p-circle me-1"></i> Area Parkir
+                                                        </span>
+                                                        <span class="badge rounded-pill" style="background-color:#fd7e14;">
+                                                            <i class="bi bi-cash-register me-1"></i> Dekat Kasir
+                                                        </span>
+                                                    @elseif ($hasil['meja']->lantai == 2)
+                                                        <span class="badge rounded-pill" style="background-color:#dc3545;">
+                                                            <i class="bi bi-slash-circle me-1"></i> No Smoking
+                                                        </span>
+                                                    @elseif ($hasil['meja']->lantai == 3)
+                                                        <span class="badge rounded-pill" style="background-color:#6f42c1;">
+                                                            <i class="bi bi-door-open me-1"></i> Kamar Mandi
+                                                        </span>
+                                                        <span class="badge rounded-pill" style="background-color:#20c997;">
+                                                            <i class="bi bi-moon me-1"></i> Mushola
+                                                        </span>
+                                                    @endif
                                                 </div>
                                             </div>
 
