@@ -136,18 +136,10 @@
                                             data-bs-target="#modal{{ $meja->kode_meja }}"
                                         >
 
-                                            @php
-                                                $gambarPath = $meja->gambar
-                                                    ? (file_exists(public_path('images/tables/' . $meja->gambar))
-                                                        ? asset('images/tables/' . $meja->gambar)
-                                                        : null)
-                                                    : null;
-                                            @endphp
-
-                                            @if ($gambarPath)
+                                            @if ($meja->gambar)
 
                                                 <img
-                                                    src="{{ $gambarPath }}"
+                                                    src="{{ asset('images/tables/' . $meja->gambar) }}"
                                                     class="card-img-top"
                                                     style="height: 180px; object-fit: cover;"
                                                     alt="Meja {{ $meja->kode_meja }}"
@@ -238,18 +230,10 @@
 
                                     <div class="modal-body">
 
-                                        @php
-                                            $gambarModal = $meja->gambar
-                                                ? (file_exists(public_path('images/tables/' . $meja->gambar))
-                                                    ? asset('images/tables/' . $meja->gambar)
-                                                    : null)
-                                                : null;
-                                        @endphp
-
-                                        @if ($gambarModal)
+                                        @if ($meja->gambar)
 
                                             <img
-                                                src="{{ $gambarModal }}"
+                                                src="{{ asset('images/tables/' . $meja->gambar) }}"
                                                 class="img-fluid rounded mb-4 w-100"
                                                 style="max-height: 300px; object-fit: cover;"
                                                 alt="Meja {{ $meja->kode_meja }}"

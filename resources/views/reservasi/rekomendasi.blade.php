@@ -74,18 +74,10 @@
                                         {{-- GAMBAR MEJA --}}
                                         {{-- ================================================= --}}
 
-                                        @php
-                                            $gambarRek = $hasil['meja']->gambar
-                                                ? (file_exists(public_path('images/tables/' . $hasil['meja']->gambar))
-                                                    ? asset('images/tables/' . $hasil['meja']->gambar)
-                                                    : null)
-                                                : null;
-                                        @endphp
-
-                                        @if($gambarRek)
+                                        @if($hasil['meja']->gambar)
 
                                             <img
-                                                src="{{ $gambarRek }}"
+                                                src="{{ asset('images/tables/' . $hasil['meja']->gambar) }}"
                                                 class="card-img-top"
                                                 style="height: 220px; object-fit: cover;"
                                                 alt="Meja {{ $hasil['meja']->kode_meja }}"
