@@ -551,10 +551,13 @@ public function simpan(Request $request)
             $direktori = public_path('images/bukti-pembayaran');
 
             if (!file_exists($direktori)) {
-                mkdir($direktori, 0755, true);
+                mkdir($direktori, 0775, true);
             }
 
             $file->move($direktori, $namaFile);
+
+            // Pastikan file bisa dibaca oleh web server
+            chmod($direktori . '/' . $namaFile, 0644);
 
             // =====================================================
             // UPDATE STATUS & SIMPAN BUKTI
